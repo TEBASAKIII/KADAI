@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>体重記録</title>
+<link rel="stylesheet" href="/static/style.css">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<h2>体重記録</h2>
+
+<ul class="user-list">
+
+<% for (const record of records) { %>
+<li>
+<span>日付：<%= record.date %>　体重：<%= record.weight %>kg</span>
+<button class="delete-button">削除</button>
+</li>
+<% } %>
+
+</ul>
+
+<br>
+
+<input type="date" class="input-date">
+
+<br>
+
+<input
+ type="number"
+ step="0.1"
+ class="input-weight"
+ placeholder="体重(kg)"
+>
+
+<br><br>
+
+<button class="send-button">送信</button>
+
+<hr>
+
+<h2>体重グラフ</h2>
+
+<canvas id="weightChart" width="600" height="300"></canvas>
+
+<script src="/static/index.js" defer></script>
+
+<script>
+
+const records = <%- JSON.stringify(records) %>;
+
+const labels = records.map(r => r.date);
+const data = records.map(r => Number(r.weight));
+
+const ctx = document.getElementById('weightChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '体重 (kg)',
+            data: data,
+            borderWidth: 2,
+            fill: false,
+            tension: 0.2
+        }]
+    },
+    options: {
+        responsive: false,
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>

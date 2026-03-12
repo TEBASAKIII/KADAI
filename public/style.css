@@ -1,0 +1,7 @@
+.user-list li button.delete-button {
+  display: none; /* 初期は非表示 */
+}
+
+.user-list li:hover button.delete-button {
+  display: inline-block; /* li にマウスを乗せると表示 */
+}
